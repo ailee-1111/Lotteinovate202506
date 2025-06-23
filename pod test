@@ -1,0 +1,33 @@
+<< pvc>>
+
+kind: PersistentVolumeClaim
+apiVersion
+
+
+
+<< pod >>
+
+apiVersion: v1
+kind: pod
+metadata:
+  name: pvc-test
+  namespace: test
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: infra2
+  containers:
+    - name: test
+      image: yi-bastion.yi-poc.openshift.net:8443/ubi9/ubi:9.6
+      resources:
+        limits:
+          cpu: "1"
+          memory: "1Gi"
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: pvc-test
+          mountPath: /test
+  restartPolicy: Never
+  voumes:
+    - name: pvc-test
+      persistentVolumeClaim:
+        claimName: pvc-test
