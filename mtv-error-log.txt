@@ -1,0 +1,930 @@
+Building command:virt-v2v[-v -x -o kubevirt -os /var/tmp/v2v -on yi-ov-poc-rhel94 -i libvirt -ic vpx://sohyunlee%40l-cloud.dom@10.238.186.1/YI-01/host/YI-2ND-CL51/yi-2nd-cl51-hm002.l-cloud.dom?no_verify=1 -ip /etc/secret/secretKey --root first -it vddk -io vddk-libdir=/opt/vmware-vix-disklib-distrib -io vddk-thumbprint=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9 -- YI-OV-PoC-RHEL94]Building command:/usr/local/bin/virt-v2v-monitor[]virt-v2v monitoring: Setting up prometheus endpoint :2112/metrics
+virt-v2v monitoring: Prometheus progress counter registered.
+info: virt-v2v: virt-v2v 2.7.1rhel=9,release=8.el9_6 (x86_64)
+info: libvirt version: 10.10.0
+check_host_free_space: large_tmpdir=/var/tmp free_space=262715256832
+[   0.0] Setting up the source: -i libvirt -ic vpx://sohyunlee%40l-cloud.dom@10.238.186.1/YI-01/host/YI-2ND-CL51/yi-2nd-cl51-hm002.l-cloud.dom?no_verify=1 -it vddk YI-OV-PoC-RHEL94
+libvirt xml is:
+<domain type='vmware' xmlns:vmware='http://libvirt.org/schemas/domain/vmware/1.0'>
+  <name>YI-OV-PoC-RHEL94</name>
+  <uuid>4216e4f2-731b-9e58-3b50-b41057207a80</uuid>
+  <memory unit='KiB'>4194304</memory>
+  <currentMemory unit='KiB'>4194304</currentMemory>
+  <vcpu placement='static'>2</vcpu>
+  <os firmware='efi'>
+    <type arch='x86_64'>hvm</type>
+    <firmware>
+      <feature enabled='yes' name='enrolled-keys'/>
+      <feature enabled='yes' name='secure-boot'/>
+    </firmware>
+  </os>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <disk type='file' device='disk'>
+      <source file='[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk'/>
+      <target dev='sda' bus='scsi'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+    </disk>
+    <controller type='scsi' index='0' model='vmpvscsi'/>
+    <interface type='vds'>
+      <mac address='00:50:56:96:6c:18' type='generated'/>
+      <source switchid='50161a58-c09c-2f7c-a8e4-77e9873c3b88' portid='4306' portgroupid='dvportgroup-13073' connectionid='759090112'/>
+      <model type='vmxnet3'/>
+    </interface>
+    <video>
+      <model type='vmvga' vram='8192' primary='yes'/>
+    </video>
+  </devices>
+  <vmware:datacenterpath>YI-01</vmware:datacenterpath>
+  <vmware:moref>vm-72331</vmware:moref>
+</domain>
+
+nbdkit --dump-config
+info: nbdkit version:
+nbdkit 1.38.5 (nbdkit-1.38.5-2.el9)
+parsed version: 1.38.5
+running nbdkit:
+ LANG=C 'nbdkit' '--exit-with-parent' '--foreground' '--pidfile' '/tmp/v2vnbdkit.eTuAN0/nbdkit1.pid' '--unix' '/tmp/v2v.jB9qTk/in0' '--threads' '16' '-D' 'nbdkit.backend.datapath=0' '-D' 'vddk.stats=1' '-D' 'vddk.datapath=0' '--verbose' '--filter' 'multi-conn' '--filter' 'cow' '--filter' 'blocksize' '--filter' 'cacheextents' '--filter' 'retry' 'vddk' 'server=10.238.186.1' 'vm=moref=vm-72331' 'file=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk' 'user=sohyunlee@l-cloud.dom' 'libdir=/opt/vmware-vix-disklib-distrib' 'thumbprint=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9' 'minblock=512' 'maxdata=2M' 'multi-conn-mode=disable' 'cow-block-size=4096' 'cow-on-read=/tmp/v2v.jB9qTk/convert' 'password=+/etc/secret/secretKey'
+nbdkit: debug: nbdkit 1.38.5 (nbdkit-1.38.5-2.el9)
+nbdkit: debug: TLS disabled: could not load TLS certificates
+nbdkit: debug: service mode: unix socket
+nbdkit: debug: NBD URI: nbd+unix://?socket=/tmp/v2v.jB9qTk/in0
+nbdkit: debug: registering plugin /usr/lib64/nbdkit/plugins/nbdkit-vddk-plugin.so
+nbdkit: debug: registered plugin /usr/lib64/nbdkit/plugins/nbdkit-vddk-plugin.so (name vddk)
+nbdkit: debug: vddk: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-retry-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-retry-filter.so (name retry)
+nbdkit: debug: retry: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-cacheextents-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-cacheextents-filter.so (name cacheextents)
+nbdkit: debug: cacheextents: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-blocksize-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-blocksize-filter.so (name blocksize)
+nbdkit: debug: blocksize: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-cow-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-cow-filter.so (name cow)
+nbdkit: debug: cow: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-multi-conn-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-multi-conn-filter.so (name multi-conn)
+nbdkit: debug: multi-conn: load
+nbdkit: debug: multi-conn: config key=server, value=10.238.186.1
+nbdkit: debug: cow: config key=server, value=10.238.186.1
+nbdkit: debug: blocksize: config key=server, value=10.238.186.1
+nbdkit: debug: cacheextents: config key=server, value=10.238.186.1
+nbdkit: debug: retry: config key=server, value=10.238.186.1
+nbdkit: debug: vddk: config key=server, value=10.238.186.1
+nbdkit: debug: multi-conn: config key=vm, value=moref=vm-72331
+nbdkit: debug: cow: config key=vm, value=moref=vm-72331
+nbdkit: debug: blocksize: config key=vm, value=moref=vm-72331
+nbdkit: debug: cacheextents: config key=vm, value=moref=vm-72331
+nbdkit: debug: retry: config key=vm, value=moref=vm-72331
+nbdkit: debug: vddk: config key=vm, value=moref=vm-72331
+nbdkit: debug: multi-conn: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: cow: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: blocksize: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: cacheextents: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: retry: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: vddk: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: multi-conn: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: cow: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: blocksize: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: cacheextents: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: retry: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: vddk: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: multi-conn: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: cow: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: blocksize: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: cacheextents: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: retry: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: vddk: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: multi-conn: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: cow: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: blocksize: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: cacheextents: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: retry: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: vddk: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: multi-conn: config key=minblock, value=512
+nbdkit: debug: cow: config key=minblock, value=512
+nbdkit: debug: blocksize: config key=minblock, value=512
+nbdkit: debug: multi-conn: config key=maxdata, value=2M
+nbdkit: debug: cow: config key=maxdata, value=2M
+nbdkit: debug: blocksize: config key=maxdata, value=2M
+nbdkit: debug: multi-conn: config key=multi-conn-mode, value=disable
+nbdkit: debug: multi-conn: config key=cow-block-size, value=4096
+nbdkit: debug: cow: config key=cow-block-size, value=4096
+nbdkit: debug: multi-conn: config key=cow-on-read, value=/tmp/v2v.jB9qTk/convert
+nbdkit: debug: cow: config key=cow-on-read, value=/tmp/v2v.jB9qTk/convert
+nbdkit: debug: multi-conn: config key=password, value=+/etc/secret/secretKey
+nbdkit: debug: cow: config key=password, value=+/etc/secret/secretKey
+nbdkit: debug: blocksize: config key=password, value=+/etc/secret/secretKey
+nbdkit: debug: cacheextents: config key=password, value=+/etc/secret/secretKey
+nbdkit: debug: retry: config key=password, value=+/etc/secret/secretKey
+nbdkit: debug: vddk: config key=password, value=+/etc/secret/secretKey
+nbdkit: debug: multi-conn: config_complete
+nbdkit: debug: cow: config_complete
+nbdkit: debug: blocksize: config_complete
+nbdkit: debug: configured values minblock=512 maxdata=2097152 maxlen=0
+nbdkit: debug: cacheextents: config_complete
+nbdkit: debug: retry: config_complete
+nbdkit: debug: vddk: config_complete
+nbdkit: debug: using thread model: serialize_requests
+nbdkit: debug: vddk: get_ready
+nbdkit: debug: original command line occupies 668 bytes
+nbdkit: debug: adding reexeced_=
+nbdkit: debug: re-executing with updated LD_LIBRARY_PATH=/opt/vmware-vix-disklib-distrib/lib64
+nbdkit: debug: nbdkit 1.38.5 (nbdkit-1.38.5-2.el9)
+nbdkit: debug: TLS disabled: could not load TLS certificates
+nbdkit: debug: service mode: unix socket
+nbdkit: debug: NBD URI: nbd+unix://?socket=/tmp/v2v.jB9qTk/in0
+nbdkit: debug: registering plugin /usr/lib64/nbdkit/plugins/nbdkit-vddk-plugin.so
+nbdkit: debug: registered plugin /usr/lib64/nbdkit/plugins/nbdkit-vddk-plugin.so (name vddk)
+nbdkit: debug: vddk: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-retry-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-retry-filter.so (name retry)
+nbdkit: debug: retry: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-cacheextents-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-cacheextents-filter.so (name cacheextents)
+nbdkit: debug: cacheextents: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-blocksize-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-blocksize-filter.so (name blocksize)
+nbdkit: debug: blocksize: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-cow-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-cow-filter.so (name cow)
+nbdkit: debug: cow: load
+nbdkit: debug: registering filter /usr/lib64/nbdkit/filters/nbdkit-multi-conn-filter.so
+nbdkit: debug: registered filter /usr/lib64/nbdkit/filters/nbdkit-multi-conn-filter.so (name multi-conn)
+nbdkit: debug: multi-conn: load
+nbdkit: debug: multi-conn: config key=server, value=10.238.186.1
+nbdkit: debug: cow: config key=server, value=10.238.186.1
+nbdkit: debug: blocksize: config key=server, value=10.238.186.1
+nbdkit: debug: cacheextents: config key=server, value=10.238.186.1
+nbdkit: debug: retry: config key=server, value=10.238.186.1
+nbdkit: debug: vddk: config key=server, value=10.238.186.1
+nbdkit: debug: multi-conn: config key=vm, value=moref=vm-72331
+nbdkit: debug: cow: config key=vm, value=moref=vm-72331
+nbdkit: debug: blocksize: config key=vm, value=moref=vm-72331
+nbdkit: debug: cacheextents: config key=vm, value=moref=vm-72331
+nbdkit: debug: retry: config key=vm, value=moref=vm-72331
+nbdkit: debug: vddk: config key=vm, value=moref=vm-72331
+nbdkit: debug: multi-conn: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: cow: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: blocksize: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: cacheextents: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: retry: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: vddk: config key=file, value=[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk
+nbdkit: debug: multi-conn: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: cow: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: blocksize: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: cacheextents: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: retry: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: vddk: config key=user, value=sohyunlee@l-cloud.dom
+nbdkit: debug: multi-conn: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: cow: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: blocksize: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: cacheextents: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: retry: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: vddk: config key=libdir, value=/opt/vmware-vix-disklib-distrib
+nbdkit: debug: multi-conn: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: cow: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: blocksize: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: cacheextents: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: retry: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: vddk: config key=thumbprint, value=9D:89:13:33:F6:EA:8E:1A:10:61:28:7A:0E:F4:68:B6:75:4E:91:F9
+nbdkit: debug: multi-conn: config key=minblock, value=512
+nbdkit: debug: cow: config key=minblock, value=512
+nbdkit: debug: blocksize: config key=minblock, value=512
+nbdkit: debug: multi-conn: config key=maxdata, value=2M
+nbdkit: debug: cow: config key=maxdata, value=2M
+nbdkit: debug: blocksize: config key=maxdata, value=2M
+nbdkit: debug: multi-conn: config key=multi-conn-mode, value=disable
+nbdkit: debug: multi-conn: config key=cow-block-size, value=4096
+nbdkit: debug: cow: config key=cow-block-size, value=4096
+nbdkit: debug: multi-conn: config key=cow-on-read, value=/tmp/v2v.jB9qTk/convert
+nbdkit: debug: cow: config key=cow-on-read, value=/tmp/v2v.jB9qTk/convert
+nbdkit: debug: multi-conn: config key=password, value=-6
+nbdkit: debug: cow: config key=password, value=-6
+nbdkit: debug: blocksize: config key=password, value=-6
+nbdkit: debug: cacheextents: config key=password, value=-6
+nbdkit: debug: retry: config key=password, value=-6
+nbdkit: debug: vddk: config key=password, value=-6
+nbdkit: debug: multi-conn: config key=reexeced_, value=
+nbdkit: debug: cow: config key=reexeced_, value=
+nbdkit: debug: blocksize: config key=reexeced_, value=
+nbdkit: debug: cacheextents: config key=reexeced_, value=
+nbdkit: debug: retry: config key=reexeced_, value=
+nbdkit: debug: vddk: config key=reexeced_, value=
+nbdkit: debug: multi-conn: config_complete
+nbdkit: debug: cow: config_complete
+nbdkit: debug: blocksize: config_complete
+nbdkit: debug: configured values minblock=512 maxdata=2097152 maxlen=0
+nbdkit: debug: cacheextents: config_complete
+nbdkit: debug: retry: config_complete
+nbdkit: debug: vddk: config_complete
+nbdkit: debug: cleaning up after re-exec
+nbdkit: debug: using thread model: serialize_requests
+nbdkit: debug: vddk: get_ready
+nbdkit: debug: retry: get_ready thread_model=2
+nbdkit: debug: cacheextents: get_ready thread_model=2
+nbdkit: debug: blocksize: get_ready thread_model=2
+nbdkit: debug: cow: get_ready thread_model=2
+nbdkit: debug: cow: temporary directory for overlay: /var/tmp
+nbdkit: debug: multi-conn: get_ready thread_model=2
+nbdkit: debug: bound to unix socket /tmp/v2v.jB9qTk/in0
+nbdkit: debug: written pidfile /tmp/v2vnbdkit.eTuAN0/nbdkit1.pid
+nbdkit: debug: vddk: after_fork
+nbdkit: debug: VDDK call: VixDiskLib_InitEx (6, 5, &debug_fn, &error_fn, &error_fn, /opt/vmware-vix-disklib-distrib, NULL)
+nbdkit: debug: OBJLIB-LIB: Objlib initialized.
+nbdkit: debug: VixDiskLib: Attempting to locate advanced transport module in "/opt/vmware-vix-disklib-distrib".
+nbdkit: debug: VixDiskLib: Advanced transport plugin /opt/vmware-vix-disklib-distrib/lib64/libdiskLibPlugin.so was successfully loaded into vixDiskLib.
+nbdkit: debug: VixDiskLib: Enabling advanced transport modes.
+nbdkit: debug: DictionaryLoad: Cannot open file "/etc/vmware/config": No such file or directory.
+nbdkit: debug: [msg.dictionary.load.openFailed] Cannot open file "/etc/vmware/config": No such file or directory.
+nbdkit: debug: PREF Optional preferences file not found at /etc/vmware/config. Using default values.
+nbdkit: debug: DictionaryLoad: Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+nbdkit: debug: [msg.dictionary.load.openFailed] Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+nbdkit: debug: PREF Optional preferences file not found at /usr/lib/vmware/settings. Using default values.
+nbdkit: debug: DictionaryLoad: Cannot open file "/usr/lib/vmware/config": No such file or directory.
+nbdkit: debug: [msg.dictionary.load.openFailed] Cannot open file "/usr/lib/vmware/config": No such file or directory.
+nbdkit: debug: PREF Optional preferences file not found at /usr/lib/vmware/config. Using default values.
+nbdkit: debug: DictionaryLoad: Cannot open file "//.vmware/config": No such file or directory.
+nbdkit: debug: [msg.dictionary.load.openFailed] Cannot open file "//.vmware/config": No such file or directory.
+nbdkit: debug: PREF Optional preferences file not found at //.vmware/config. Using default values.
+nbdkit: debug: DictionaryLoad: Cannot open file "//.vmware/preferences": No such file or directory.
+nbdkit: debug: [msg.dictionary.load.openFailed] Cannot open file "//.vmware/preferences": No such file or directory.
+nbdkit: debug: PREF Optional preferences file not found at //.vmware/preferences. Using default values.
+nbdkit: debug: lib/ssl: OpenSSL using default provider
+nbdkit: debug: lib/ssl: Client usage
+nbdkit: debug: lib/ssl: protocol list tls1.2
+nbdkit: debug: lib/ssl: protocol min 0x303 max 0x303
+nbdkit: debug: lib/ssl: protocol list tls1.2 (openssl flags 0x36000000)
+nbdkit: debug: lib/ssl: cipher list ECDHE+AESGCM:RSA+AESGCM:ECDHE+AES:RSA+AES
+nbdkit: debug: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+nbdkit: debug: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+nbdkit: debug: lib/ssl: Server usage
+nbdkit: debug: lib/ssl: protocol list tls1.2
+nbdkit: debug: lib/ssl: protocol min 0x303 max 0x303
+nbdkit: debug: lib/ssl: protocol list tls1.2 (openssl flags 0x36000000)
+nbdkit: debug: lib/ssl: cipher list ECDHE+AESGCM:RSA+AESGCM:ECDHE+AES:RSA+AES
+nbdkit: debug: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+nbdkit: debug: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+nbdkit: debug: VixDiskLib: Initialize transport modes.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [NFC VERBOSE]NFC connection accept timeout: 180000 milliseconds
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [NFC VERBOSE]NFC request timeout: 180000 milliseconds
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [NFC VERBOSE]NFC read timeout: 60000 milliseconds
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [NFC VERBOSE]NFC write timeout: 600000 milliseconds
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [NFC VERBOSE]NFC fssrvr request timeout: 0 milliseconds
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [NFC VERBOSE]NFC fssrvr write timeout: 0 milliseconds
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [NFC VERBOSE]NFC max recv retries: 1
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] DictionaryLoad: Cannot open file "/etc/vmware/config": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [msg.dictionary.load.openFailed] Cannot open file "/etc/vmware/config": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] PREF Optional preferences file not found at /etc/vmware/config. Using default values.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] DictionaryLoad: Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [msg.dictionary.load.openFailed] Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] PREF Optional preferences file not found at /usr/lib/vmware/settings. Using default values.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] DictionaryLoad: Cannot open file "/usr/lib/vmware/config": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [msg.dictionary.load.openFailed] Cannot open file "/usr/lib/vmware/config": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] PREF Optional preferences file not found at /usr/lib/vmware/config. Using default values.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] DictionaryLoad: Cannot open file "//.vmware/config": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [msg.dictionary.load.openFailed] Cannot open file "//.vmware/config": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] PREF Optional preferences file not found at //.vmware/config. Using default values.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] DictionaryLoad: Cannot open file "//.vmware/preferences": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] [msg.dictionary.load.openFailed] Cannot open file "//.vmware/preferences": No such file or directory.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] PREF Optional preferences file not found at //.vmware/preferences. Using default values.
+nbdkit: debug: 2025-06-26T07:18:36.821Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: OpenSSL using default provider
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: Client usage
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: protocol list tls1.2
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: protocol min 0x303 max 0x303
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: protocol list tls1.2 (openssl flags 0x36000000)
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: cipher list ECDHE+AESGCM:RSA+AESGCM:ECDHE+AES:RSA+AES
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: curves list prime256v1:secp384r1:secp521r1
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: Server usage
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: protocol list tls1.2
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: protocol min 0x303 max 0x303
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: protocol list tls1.2 (openssl flags 0x36000000)
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: cipher list ECDHE+AESGCM:RSA+AESGCM:ECDHE+AES:RSA+AES
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+nbdkit: debug: 2025-06-26T07:18:36.822Z info -[00046] [Originator@6876 sub=Libs] lib/ssl: curves list prime256v1:secp384r1:secp521r1
+nbdkit: debug: 2025-06-26T07:18:36.983Z info -[00046] [Originator@6876 sub=Libs] [NFC INFO]Nfc_Init: Poll not initialized.
+nbdkit: debug: VixDiskLib: Available transport modes: file:san:hotadd:nbdssl:nbd.
+nbdkit: debug: VMware VixDiskLib (8.0.3) Release build-23950268
+nbdkit: debug: VixDiskLib: PhoneHome is disabled.
+nbdkit: debug: retry: after_fork
+nbdkit: debug: cacheextents: after_fork
+nbdkit: debug: blocksize: after_fork
+nbdkit: debug: cow: after_fork
+nbdkit: debug: multi-conn: after_fork
+[   5.4] Opening the source
+libguestfs: trace: set_verbose true
+libguestfs: trace: set_verbose = 0
+libguestfs: trace: set_identifier "v2v"
+libguestfs: trace: v2v: set_identifier = 0
+libguestfs: trace: v2v: set_program "virt-v2v"
+libguestfs: trace: v2v: set_program = 0
+libguestfs: trace: v2v: get_memsize
+libguestfs: trace: v2v: get_memsize = 1280
+libguestfs: trace: v2v: set_memsize 2560
+libguestfs: trace: v2v: set_memsize = 0
+libguestfs: trace: v2v: set_smp 8
+libguestfs: trace: v2v: set_smp = 0
+libguestfs: trace: v2v: set_network true
+libguestfs: trace: v2v: set_network = 0
+libguestfs: trace: v2v: add_drive "" "format:raw" "protocol:nbd" "server:unix:/tmp/v2v.jB9qTk/in0" "cachemode:unsafe" "discard:besteffort"
+libguestfs: trace: v2v: add_drive = 0
+libguestfs: trace: v2v: launch
+libguestfs: trace: v2v: max_disks
+libguestfs: trace: v2v: max_disks = 255
+libguestfs: trace: v2v: get_tmpdir
+libguestfs: trace: v2v: get_tmpdir = "/tmp"
+libguestfs: trace: v2v: version
+libguestfs: trace: v2v: version = <struct guestfs_version = major: 1, minor: 54, release: 0, extra: rhel=9,release=8.el9_6,libvirt, >
+libguestfs: trace: v2v: get_backend
+libguestfs: trace: v2v: get_backend = "direct"
+libguestfs: launch: program=virt-v2v
+libguestfs: launch: identifier=v2v
+libguestfs: launch: version=1.54.0rhel=9,release=8.el9_6,libvirt
+libguestfs: launch: backend registered: direct
+libguestfs: launch: backend registered: libvirt
+libguestfs: launch: backend=direct
+libguestfs: launch: tmpdir=/tmp/libguestfsDn4oMh
+libguestfs: launch: umask=0022
+libguestfs: launch: euid=107
+libguestfs: launch: host: Linux migtest-vm-72331-tb57f 5.14.0-427.66.1.el9_4.x86_64 #1 SMP PREEMPT_DYNAMIC Sun Apr 20 15:36:45 EDT 2025 x86_64
+libguestfs: trace: v2v: get_cachedir
+libguestfs: trace: v2v: get_cachedir = "/var/tmp"
+libguestfs: begin building supermin appliance
+libguestfs: run supermin
+libguestfs: command: run: /usr/bin/supermin
+libguestfs: command: run: \ --build
+libguestfs: command: run: \ --verbose
+libguestfs: command: run: \ --if-newer
+libguestfs: command: run: \ --lock /var/tmp/.guestfs-107/lock
+libguestfs: command: run: \ --copy-kernel
+libguestfs: command: run: \ -f ext2
+libguestfs: command: run: \ --host-cpu x86_64
+libguestfs: command: run: \ /usr/lib64/guestfs/supermin.d
+libguestfs: command: run: \ -o /var/tmp/.guestfs-107/appliance.d
+supermin: version: 5.3.5
+supermin: rpm: detected RPM version 4.16
+supermin: rpm: detected RPM architecture x86_64
+supermin: package handler: fedora/rpm
+supermin: acquiring lock on /var/tmp/.guestfs-107/lock
+supermin: build: /usr/lib64/guestfs/supermin.d
+supermin: reading the supermin appliance
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/base.tar.gz type gzip base image (tar)
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/daemon.tar.gz type gzip base image (tar)
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/excludefiles type uncompressed excludefiles
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/hostfiles type uncompressed hostfiles
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/init.tar.gz type gzip base image (tar)
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/packages type uncompressed packages
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/udev-rules.tar.gz type gzip base image (tar)
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/zz-packages-xfs type uncompressed packages
+supermin: build: visiting /usr/lib64/guestfs/supermin.d/zz-winsupport.tar.gz type gzip base image (tar)
+supermin: mapping package names to installed packages
+supermin: resolving full list of package dependencies
+supermin: build: 184 packages, including dependencies
+supermin: build: 32058 files
+supermin: build: 9120 files, after matching excludefiles
+supermin: build: 9128 files, after adding hostfiles
+supermin: build: 7236 files, after removing unreadable files
+supermin: build: 7263 files, after munging
+supermin: kernel: looking for kernel using environment variables ...
+supermin: kernel: looking for kernels in /lib/modules/*/vmlinuz ...
+supermin: kernel: picked vmlinuz /lib/modules/5.14.0-570.18.1.el9_6.x86_64/vmlinuz
+supermin: kernel: kernel_version 5.14.0-570.18.1.el9_6.x86_64
+supermin: kernel: modpath /lib/modules/5.14.0-570.18.1.el9_6.x86_64
+supermin: ext2: creating empty ext2 filesystem '/var/tmp/.guestfs-107/appliance.d.296a18qy/root'
+supermin: ext2: populating from base image
+supermin: ext2: copying files from host filesystem
+supermin: warning: /usr/libexec/utempter/utempter: Permission denied (ignored)
+Some distro files are not public readable, so supermin cannot copy them
+into the appliance.  This is a problem with your Linux distro.  Please ask
+your distro to stop doing pointless security by obscurity.
+You can ignore these warnings.  You *do not* need to use sudo.
+supermin: warning: /usr/sbin/unix_update: Permission denied (ignored)
+supermin: warning: /var/lib/systemd/random-seed: Permission denied (ignored)
+supermin: ext2: copying kernel modules
+supermin: warning: /lib/modules/5.14.0-570.18.1.el9_6.x86_64/System.map: Permission denied (ignored)
+supermin: ext2: creating minimal initrd '/var/tmp/.guestfs-107/appliance.d.296a18qy/initrd'
+supermin: ext2: wrote 32 modules to minimal initrd
+supermin: renaming /var/tmp/.guestfs-107/appliance.d.296a18qy to /var/tmp/.guestfs-107/appliance.d
+libguestfs: finished building supermin appliance
+libguestfs: begin testing qemu features
+libguestfs: trace: v2v: get_cachedir
+libguestfs: trace: v2v: get_cachedir = "/var/tmp"
+libguestfs: checking for previously cached test results of /usr/libexec/qemu-kvm, in /var/tmp/.guestfs-107
+libguestfs: command: run: /usr/libexec/qemu-kvm
+libguestfs: command: run: \ -display none
+libguestfs: command: run: \ -help
+libguestfs: command: run: /usr/libexec/qemu-kvm
+libguestfs: command: run: \ -display none
+libguestfs: command: run: \ -machine q35,accel=kvm:hvf:tcg
+libguestfs: command: run: \ -device ?
+libguestfs: command: run: echo '{ "execute": "qmp_capabilities" }' '{ "execute": "query-qmp-schema" }' '{ "execute": "quit" }'  | QEMU_AUDIO_DRV=none "/usr/libexec/qemu-kvm" -display none -machine "q35,accel=kvm:hvf:tcg" -qmp stdio
+libguestfs: command: run: echo '{ "execute": "qmp_capabilities" }' '{ "execute": "query-kvm" }' '{ "execute": "quit" }'  | QEMU_AUDIO_DRV=none "/usr/libexec/qemu-kvm" -display none -machine "q35,accel=kvm:hvf:tcg" -qmp stdio
+libguestfs: saving test results
+libguestfs: qemu version: 9.1
+libguestfs: qemu KVM: enabled
+libguestfs: trace: v2v: get_backend_setting "force_tcg"
+libguestfs: trace: v2v: get_backend_setting = NULL (error)
+libguestfs: trace: v2v: get_backend_setting "force_kvm"
+libguestfs: trace: v2v: get_backend_setting = NULL (error)
+libguestfs: trace: v2v: get_sockdir
+libguestfs: trace: v2v: get_sockdir = "/tmp"
+libguestfs: finished testing qemu features
+libguestfs: trace: v2v: get_backend_setting "gdb"
+libguestfs: trace: v2v: get_backend_setting = NULL (error)
+libguestfs: command: run: passt --help
+Usage: passt [OPTION]...
+
+  -d, --debug\t\tBe verbose
+      --trace\t\tBe extra verbose, implies --debug
+  -q, --quiet\t\tDon't print informational messages
+  -f, --foreground\tDon't run in background
+    default: run in background
+  -l, --log-file PATH\tLog (only) to given file
+  --log-size BYTES\tMaximum size of log file
+    default: 1 MiB
+  --runas UID|UID:GID \tRun as given UID, GID, which can be
+    numeric, or login and group names
+    default: drop to user "nobody"
+  -h, --help\t\tDisplay this help message and exit
+  --version\t\tShow version and exit
+  -s, --socket, --socket-path PATH\tUNIX domain socket path
+    default: probe free path starting from /tmp/passt_1.socket
+  --vhost-user\t\tEnable vhost-user mode
+    UNIX domain socket is provided by -s option
+  --print-capabilities\tprint back-end capabilities in JSON format,
+    only meaningful for vhost-user mode
+  --repair-path PATH\tpath for passt-repair(1)
+    default: append '.repair' to UNIX domain path
+  -F, --fd FD\t\tUse FD as pre-opened connected socket
+  -p, --pcap FILE\tLog tap-facing traffic to pcap file
+  -P, --pid FILE\tWrite own PID to the given file
+  -m, --mtu MTU\tAssign MTU via DHCP/NDP
+    a zero value disables assignment
+    default: 65520: maximum 802.3 MTU minus 802.3 header
+                    length, rounded to 32 bits (IPv4 words)
+  -a, --address ADDR\tAssign IPv4 or IPv6 address ADDR
+    can be specified zero to two times (for IPv4 and IPv6)
+    default: use addresses from interface with default route
+  -n, --netmask MASK\tAssign IPv4 MASK, dot-decimal or bits
+    default: netmask from matching address on the host
+  -M, --mac-addr ADDR\tUse source MAC address ADDR
+    default: 9a:55:9a:55:9a:55 (locally administered)
+  -g, --gateway ADDR\tPass IPv4 or IPv6 address as gateway
+    default: gateway from interface with default route
+  -i, --interface NAME\tInterface for addresses and routes
+    default: from --outbound-if4 and --outbound-if6, if any
+             otherwise interface with first default route
+  -o, --outbound ADDR\tBind to address as outbound source
+    can be specified zero to two times (for IPv4 and IPv6)
+    default: use source address from routing tables
+  --outbound-if4 NAME\tBind to outbound interface for IPv4
+    default: use interface from default route
+  --outbound-if6 NAME\tBind to outbound interface for IPv6
+    default: use interface from default route
+  -D, --dns ADDR\tUse IPv4 or IPv6 address as DNS
+    can be specified multiple times
+    a single, empty option disables DNS information
+    default: use addresses from /etc/resolv.conf
+  -S, --search LIST\tSpace-separated list, search domains
+    a single, empty option disables the DNS search list
+  -H, --hostname NAME \tHostname to configure client with
+  --fqdn NAME\t\tFQDN to configure client with
+    default: use search list from /etc/resolv.conf
+  --no-dhcp-dns\tNo DNS list in DHCP/DHCPv6/NDP
+  --no-dhcp-search\tNo list in DHCP/DHCPv6/NDP
+  --map-host-loopback ADDR\tTranslate ADDR to refer to host
+    can be specified zero to two times (for IPv4 and IPv6)
+    default: gateway address
+  --map-guest-addr ADDR\tTranslate ADDR to guest's address
+    can be specified zero to two times (for IPv4 and IPv6)
+    default: none
+  --dns-forward ADDR\tForward DNS queries sent to ADDR
+    can be specified zero to two times (for IPv4 and IPv6)
+    default: don't forward DNS queries
+  --dns-host ADDR\tHost nameserver to direct queries to
+    can be specified zero to two times (for IPv4 and IPv6)
+    default: first nameserver from host's /etc/resolv.conf
+  --no-tcp\t\tDisable TCP protocol handler
+  --no-udp\t\tDisable UDP protocol handler
+  --no-icmp\t\tDisable ICMP/ICMPv6 protocol handler
+  --no-dhcp\t\tDisable DHCP server
+  --no-ndp\t\tDisable NDP responses
+  --no-dhcpv6\t\tDisable DHCPv6 server
+  --no-ra\t\tDisable router advertisements
+  --freebind\t\tBind to any address for forwarding
+  --no-map-gw\t\tDon't map gateway address to host
+  -4, --ipv4-only\tEnable IPv4 operation only
+  -6, --ipv6-only\tEnable IPv6 operation only
+  -1, --one-off\tQuit after handling one single client
+  -t, --tcp-ports SPEC\tTCP port forwarding to guest
+   libguestfs: command: run: passt
+libguestfs: command: run: \ --one-off
+libguestfs: command: run: \ --socket /tmp/libguestfsM1NkoA/passt.sock
+libguestfs: command: run: \ --pid /tmp/libguestfsM1NkoA/passt3.pid
+libguestfs: command: run: \ --address 169.254.2.15
+libguestfs: command: run: \ --netmask 16
+libguestfs: command: run: \ --mac-addr 52:56:00:00:00:02
+libguestfs: command: run: \ --gateway 169.254.2.2
+No interfaces with usable IPv6 routes
+UNIX domain socket bound at /tmp/libguestfsM1NkoA/passt.sock
+Template interface: eth0 (IPv4)
+MAC:
+    host: 52:56:00:00:00:02
+    NAT to host 127.0.0.1: 169.254.2.2
+DHCP:
+    assign: 169.254.2.15
+    mask: 255.255.0.0
+    router: 169.254.2.2
+DNS:
+    172.30.0.10
+DNS search list:
+    12-mtv.svc.cluster.local
+    svc.cluster.local
+    cluster.local
+
+You can now start qemu (>= 7.2, with commit 13c6be96618c):
+    kvm ... -device virtio-net-pci,netdev=s -netdev stream,id=s,server=off,addr.type=unix,addr.path=/tmp/libguestfsM1NkoA/passt.sock
+or qrap, for earlier qemu versions:
+    ./qrap 5 kvm ... -net socket,fd=5 -net nic,model=virtio
+/usr/libexec/qemu-kvm \
+    -global virtio-blk-pci.scsi=off \
+    -no-user-config \
+    -nodefaults \
+    -display none \
+    -machine q35,accel=kvm:tcg,graphics=off \
+    -cpu max,la57=off \
+    -smp 8 \
+    -m 2560 \
+    -no-reboot \
+    -rtc driftfix=slew \
+    -global kvm-pit.lost_tick_policy=discard \
+    -kernel /var/tmp/.guestfs-107/appliance.d/kernel \
+    -initrd /var/tmp/.guestfs-107/appliance.d/initrd \
+    -object rng-random,filename=/dev/urandom,id=rng0 \
+    -device virtio-rng-pci,rng=rng0 \
+    -device virtio-scsi-pci,id=scsi \
+    -drive file=nbd:unix:/tmp/v2v.jB9qTk/in0,cache=unsafe,format=raw,discard=unmap,id=hd0,if=none \
+    -device scsi-hd,drive=hd0 \
+    -drive file=/var/tmp/.guestfs-107/appliance.d/root,snapshot=on,id=appliance,cache=unsafe,if=none \
+    -device scsi-hd,drive=appliance \
+    -device virtio-serial-pci \
+    -serial stdio \
+    -chardev socket,path=/tmp/libguestfsM1NkoA/guestfsd.sock,id=channel0 \
+    -device virtserialport,chardev=channel0,name=org.libguestfs.channel.0 \
+    -netdev stream,id=usernet,addr.type=unix,addr.path=/tmp/libguestfsM1NkoA/passt.sock \
+    -device virtio-net-pci,netdev=usernet \
+    -append "panic=1 console=ttyS0 edd=off udevtimeout=6000 udev.event-timeout=6000 no_timer_check printk.time=1 cgroup_disable=memory usbcore.nousb cryptomgr.notests tsc=reliable 8250.nr_uarts=1 root=UUID=472ef55e-61da-4d2d-85c4-9d76ae07ac3b selinux=0 guestfs_verbose=1 guestfs_network=1 TERM=xterm guestfs_identifier=v2v"
+nbdkit: debug: accepted connection
+nbdkit: vddk[1]: debug: multi-conn: preconnect
+nbdkit: vddk[1]: debug: cow: preconnect
+nbdkit: vddk[1]: debug: blocksize: preconnect
+nbdkit: vddk[1]: debug: cacheextents: preconnect
+nbdkit: vddk[1]: debug: retry: preconnect
+nbdkit: vddk[1]: debug: vddk: preconnect
+nbdkit: vddk[1]: debug: newstyle negotiation: flags: global 0x3
+nbdkit: vddk[1]: debug: newstyle negotiation: client flags: 0x3
+nbdkit: vddk[1]: debug: replying to unknown (0xb) with unknown (0x80000001)
+nbdkit: vddk[1]: debug: newstyle negotiation: unknown (0x8): client requested structured replies
+nbdkit: vddk[1]: debug: replying to unknown (0x8) with unknown (0x1)
+nbdkit: vddk[1]: debug: newstyle negotiation: unknown (0xa): client requested export ''
+nbdkit: vddk[1]: debug: newstyle negotiation: unknown (0xa): set count: 1
+nbdkit: vddk[1]: debug: newstyle negotiation: unknown (0xa): set base:allocation
+nbdkit: vddk[1]: debug: newstyle negotiation: unknown (0xa): replying with base:allocation id 1
+nbdkit: vddk[1]: debug: replying to unknown (0xa) with unknown (0x1)
+nbdkit: vddk[1]: debug: newstyle negotiation: unknown (0xa): reply complete
+nbdkit: vddk[1]: debug: newstyle negotiation: unknown (0x7): client requested export ''
+nbdkit: vddk[1]: debug: multi-conn: open readonly=0 exportname="" tls=0
+nbdkit: vddk[1]: debug: multi-conn: default_export readonly=0 tls=0
+nbdkit: vddk[1]: debug: cow: default_export readonly=0 tls=0
+nbdkit: vddk[1]: debug: blocksize: default_export readonly=0 tls=0
+nbdkit: vddk[1]: debug: cacheextents: default_export readonly=0 tls=0
+nbdkit: vddk[1]: debug: retry: default_export readonly=0 tls=0
+nbdkit: vddk[1]: debug: vddk: default_export readonly=0 tls=0
+nbdkit: vddk[1]: debug: cow: open readonly=0 exportname="" tls=0
+nbdkit: vddk[1]: debug: cow: default_export readonly=0 tls=0
+nbdkit: vddk[1]: debug: blocksize: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: blocksize: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: cacheextents: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: cacheextents: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: retry: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: retry: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: vddk: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: vddk: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_AllocateConnectParams ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_ConnectEx (h->params, 1, NULL, NULL, &connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Establish connection using (null).
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLibConnectInt: Establish connection.
+nbdkit: vddk[1]: debug: VixDiskLib: Resolve host.
+nbdkit: vddk[1]: debug: 2025-06-26T07:18:51.894Z warning -[00195] [Originator@6876 sub=transport] SAN transport mode requires a snapshot.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Open (connection, [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk, 4, &handle)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Open disk '[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk'.
+nbdkit: vddk[1]: debug: NBD_ClientOpen: attempting to create connection to vpxa-nfcssl://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902
+nbdkit: vddk[1]: debug: CnxAuthdConnect: Returning false because CnxAuthdConnectTCP failed
+nbdkit: vddk[1]: debug: CnxConnectAuthd: Returning false because CnxAuthdConnect failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Returning false because CnxConnectAuthd failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Error message: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect to peer. Error: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcEstablishAuthCnxToServer: Failed to create new AuthD connection: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]Nfc_BindAndEstablishAuthdCnx3: Failed to create a connection with server yi-2nd-cl51-hm002.l-cloud.dom: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: NBD_ClientOpen: Couldn't connect to yi-2nd-cl51-hm002.l-cloud.dom:902 Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: DISKLIB-DSCPTR: DescriptorOpenNbd: Failed to open NBD extent 'vpxa-nfcssl://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-LINK  : DiskLinkOpen: Failed to open 'vpxa-nfcssl://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': : NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-CHAIN : DiskChainOpen: "vpxa-nfcssl://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902": failed to open: NBD_ERR_NETWORK_CONNECT.
+nbdkit: vddk[1]: debug: DISKLIB-LIB   : Failed to open 'vpxa-nfcssl://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902' with flags 0xe NBD_ERR_NETWORK_CONNECT (2338).
+nbdkit: vddk[1]: debug: NBD_ClientOpen: attempting to create connection to vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902
+nbdkit: vddk[1]: debug: CnxAuthdConnect: Returning false because CnxAuthdConnectTCP failed
+nbdkit: vddk[1]: debug: CnxConnectAuthd: Returning false because CnxAuthdConnect failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Returning false because CnxConnectAuthd failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Error message: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect to peer. Error: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcEstablishAuthCnxToServer: Failed to create new AuthD connection: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]Nfc_BindAndEstablishAuthdCnx3: Failed to create a connection with server yi-2nd-cl51-hm002.l-cloud.dom: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: NBD_ClientOpen: Couldn't connect to yi-2nd-cl51-hm002.l-cloud.dom:902 Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: DISKLIB-DSCPTR: DescriptorOpenNbd: Failed to open NBD extent 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-LINK  : DiskLinkOpen: Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': : NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-CHAIN : DiskChainOpen: "vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902": failed to open: NBD_ERR_NETWORK_CONNECT.
+nbdkit: vddk[1]: debug: DISKLIB-LIB   : Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902' with flags 0xe NBD_ERR_NETWORK_CONNECT (2338).
+nbdkit: vddk[1]: debug: VixDiskLib: Detected DiskLib error 2338 (NBD_ERR_NETWORK_CONNECT).
+nbdkit: vddk[1]: debug: VixDiskLib: Error occurred when attempting to open disk. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 6536.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 7112.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Open: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) at 7199.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_GetErrorText (14009)
+nbdkit: vddk[1]: error: VixDiskLib_Open: [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk: The server refused connection
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeErrorText ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Disconnect (connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Disconnect: Disconnect.
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Function: VixDiskLib_Open
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Error: 14009
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeConnectParams (params)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: vddk: open returned handle (nil)
+nbdkit: vddk[1]: debug: open failed: original errno = 108
+nbdkit: vddk[1]: debug: retry 1: waiting 2 seconds before retrying
+nbdkit: vddk[1]: debug: vddk: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: vddk: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_AllocateConnectParams ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_ConnectEx (h->params, 1, NULL, NULL, &connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Establish connection using (null).
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLibConnectInt: Establish connection.
+nbdkit: vddk[1]: debug: VixDiskLib: Resolve host.
+nbdkit: vddk[1]: debug: 2025-06-26T07:18:54.116Z error -[00195] [Originator@6876 sub=Default] Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Advanced transport modes not available for opening moref=vm-72331. (Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.)
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Open (connection, [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk, 4, &handle)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Open disk '[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk'.
+nbdkit: vddk[1]: debug: NBD_ClientOpen: attempting to create connection to vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902
+nbdkit: vddk[1]: debug: CnxAuthdConnect: Returning false because CnxAuthdConnectTCP failed
+nbdkit: vddk[1]: debug: CnxConnectAuthd: Returning false because CnxAuthdConnect failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Returning false because CnxConnectAuthd failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Error message: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect to peer. Error: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcEstablishAuthCnxToServer: Failed to create new AuthD connection: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]Nfc_BindAndEstablishAuthdCnx3: Failed to create a connection with server yi-2nd-cl51-hm002.l-cloud.dom: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: NBD_ClientOpen: Couldn't connect to yi-2nd-cl51-hm002.l-cloud.dom:902 Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: DISKLIB-DSCPTR: DescriptorOpenNbd: Failed to open NBD extent 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-LINK  : DiskLinkOpen: Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': : NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-CHAIN : DiskChainOpen: "vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902": failed to open: NBD_ERR_NETWORK_CONNECT.
+nbdkit: vddk[1]: debug: DISKLIB-LIB   : Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902' with flags 0xe NBD_ERR_NETWORK_CONNECT (2338).
+nbdkit: vddk[1]: debug: VixDiskLib: Detected DiskLib error 2338 (NBD_ERR_NETWORK_CONNECT).
+nbdkit: vddk[1]: debug: VixDiskLib: Failed to open disk vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902!52 28 d1 cf c0 bb 9b f3-af ac 27 21 68 69 cf 45. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 6435.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 7112.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Open: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) at 7199.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_GetErrorText (14009)
+nbdkit: vddk[1]: error: VixDiskLib_Open: [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk: The server refused connection
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeErrorText ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Disconnect (connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Disconnect: Disconnect.
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Function: VixDiskLib_Open
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Error: 14009
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeConnectParams (params)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: vddk: open returned handle (nil)
+nbdkit: vddk[1]: debug: open failed: original errno = 108
+nbdkit: vddk[1]: debug: retry 2: waiting 4 seconds before retrying
+nbdkit: vddk[1]: debug: vddk: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: vddk: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_AllocateConnectParams ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_ConnectEx (h->params, 1, NULL, NULL, &connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Establish connection using (null).
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLibConnectInt: Establish connection.
+nbdkit: vddk[1]: debug: VixDiskLib: Resolve host.
+nbdkit: vddk[1]: debug: 2025-06-26T07:18:58.341Z error -[00195] [Originator@6876 sub=Default] Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Advanced transport modes not available for opening moref=vm-72331. (Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.)
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Open (connection, [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk, 4, &handle)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Open disk '[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk'.
+nbdkit: vddk[1]: debug: NBD_ClientOpen: attempting to create connection to vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902
+nbdkit: vddk[1]: debug: CnxAuthdConnect: Returning false because CnxAuthdConnectTCP failed
+nbdkit: vddk[1]: debug: CnxConnectAuthd: Returning false because CnxAuthdConnect failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Returning false because CnxConnectAuthd failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Error message: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect to peer. Error: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcEstablishAuthCnxToServer: Failed to create new AuthD connection: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]Nfc_BindAndEstablishAuthdCnx3: Failed to create a connection with server yi-2nd-cl51-hm002.l-cloud.dom: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: NBD_ClientOpen: Couldn't connect to yi-2nd-cl51-hm002.l-cloud.dom:902 Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: DISKLIB-DSCPTR: DescriptorOpenNbd: Failed to open NBD extent 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-LINK  : DiskLinkOpen: Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': : NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-CHAIN : DiskChainOpen: "vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902": failed to open: NBD_ERR_NETWORK_CONNECT.
+nbdkit: vddk[1]: debug: DISKLIB-LIB   : Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902' with flags 0xe NBD_ERR_NETWORK_CONNECT (2338).
+nbdkit: vddk[1]: debug: VixDiskLib: Detected DiskLib error 2338 (NBD_ERR_NETWORK_CONNECT).
+nbdkit: vddk[1]: debug: VixDiskLib: Failed to open disk vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902!52 05 19 30 dd 6f d2 92-4c d3 e0 07 bb 39 67 07. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 6435.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 7112.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Open: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) at 7199.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_GetErrorText (14009)
+nbdkit: vddk[1]: error: VixDiskLib_Open: [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk: The server refused connection
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeErrorText ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Disconnect (connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Disconnect: Disconnect.
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Function: VixDiskLib_Open
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Error: 14009
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeConnectParams (params)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: vddk: open returned handle (nil)
+nbdkit: vddk[1]: debug: open failed: original errno = 108
+nbdkit: vddk[1]: debug: retry 3: waiting 8 seconds before retrying
+nbdkit: vddk[1]: debug: vddk: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: vddk: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_AllocateConnectParams ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_ConnectEx (h->params, 1, NULL, NULL, &connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Establish connection using (null).
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLibConnectInt: Establish connection.
+nbdkit: vddk[1]: debug: VixDiskLib: Resolve host.
+nbdkit: vddk[1]: debug: 2025-06-26T07:19:06.583Z error -[00195] [Originator@6876 sub=Default] Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Advanced transport modes not available for opening moref=vm-72331. (Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.)
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Open (connection, [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk, 4, &handle)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Open disk '[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk'.
+nbdkit: vddk[1]: debug: NBD_ClientOpen: attempting to create connection to vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902
+nbdkit: vddk[1]: debug: CnxAuthdConnect: Returning false because CnxAuthdConnectTCP failed
+nbdkit: vddk[1]: debug: CnxConnectAuthd: Returning false because CnxAuthdConnect failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Returning false because CnxConnectAuthd failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Error message: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect to peer. Error: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcEstablishAuthCnxToServer: Failed to create new AuthD connection: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]Nfc_BindAndEstablishAuthdCnx3: Failed to create a connection with server yi-2nd-cl51-hm002.l-cloud.dom: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: NBD_ClientOpen: Couldn't connect to yi-2nd-cl51-hm002.l-cloud.dom:902 Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: DISKLIB-DSCPTR: DescriptorOpenNbd: Failed to open NBD extent 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-LINK  : DiskLinkOpen: Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': : NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-CHAIN : DiskChainOpen: "vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902": failed to open: NBD_ERR_NETWORK_CONNECT.
+nbdkit: vddk[1]: debug: DISKLIB-LIB   : Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902' with flags 0xe NBD_ERR_NETWORK_CONNECT (2338).
+nbdkit: vddk[1]: debug: VixDiskLib: Detected DiskLib error 2338 (NBD_ERR_NETWORK_CONNECT).
+nbdkit: vddk[1]: debug: VixDiskLib: Failed to open disk vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902!52 52 b6 d3 be 47 db 65-ff 8d d7 f3 6f 6e 93 21. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 6435.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 7112.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Open: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) at 7199.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_GetErrorText (14009)
+nbdkit: vddk[1]: error: VixDiskLib_Open: [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk: The server refused connection
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeErrorText ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Disconnect (connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Disconnect: Disconnect.
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Function: VixDiskLib_Open
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Error: 14009
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeConnectParams (params)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: vddk: open returned handle (nil)
+nbdkit: vddk[1]: debug: open failed: original errno = 108
+nbdkit: vddk[1]: debug: retry 4: waiting 16 seconds before retrying
+nbdkit: vddk[1]: debug: vddk: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: vddk: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_AllocateConnectParams ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_ConnectEx (h->params, 1, NULL, NULL, &connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Establish connection using (null).
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLibConnectInt: Establish connection.
+nbdkit: vddk[1]: debug: VixDiskLib: Resolve host.
+nbdkit: vddk[1]: debug: 2025-06-26T07:19:22.851Z error -[00195] [Originator@6876 sub=Default] Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Advanced transport modes not available for opening moref=vm-72331. (Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.)
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Open (connection, [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk, 4, &handle)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Open disk '[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk'.
+nbdkit: vddk[1]: debug: NBD_ClientOpen: attempting to create connection to vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902
+nbdkit: vddk[1]: debug: CnxAuthdConnect: Returning false because CnxAuthdConnectTCP failed
+nbdkit: vddk[1]: debug: CnxConnectAuthd: Returning false because CnxAuthdConnect failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Returning false because CnxConnectAuthd failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Error message: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect to peer. Error: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcEstablishAuthCnxToServer: Failed to create new AuthD connection: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]Nfc_BindAndEstablishAuthdCnx3: Failed to create a connection with server yi-2nd-cl51-hm002.l-cloud.dom: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: NBD_ClientOpen: Couldn't connect to yi-2nd-cl51-hm002.l-cloud.dom:902 Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: DISKLIB-DSCPTR: DescriptorOpenNbd: Failed to open NBD extent 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-LINK  : DiskLinkOpen: Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': : NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-CHAIN : DiskChainOpen: "vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902": failed to open: NBD_ERR_NETWORK_CONNECT.
+nbdkit: vddk[1]: debug: DISKLIB-LIB   : Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902' with flags 0xe NBD_ERR_NETWORK_CONNECT (2338).
+nbdkit: vddk[1]: debug: VixDiskLib: Detected DiskLib error 2338 (NBD_ERR_NETWORK_CONNECT).
+nbdkit: vddk[1]: debug: VixDiskLib: Failed to open disk vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902!52 5a 27 00 05 bb 92 6d-ab f4 8f d4 c4 73 63 f3. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 6435.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 7112.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Open: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) at 7199.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_GetErrorText (14009)
+nbdkit: vddk[1]: error: VixDiskLib_Open: [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk: The server refused connection
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeErrorText ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Disconnect (connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Disconnect: Disconnect.
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Function: VixDiskLib_Open
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Error: 14009
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeConnectParams (params)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: vddk: open returned handle (nil)
+nbdkit: vddk[1]: debug: open failed: original errno = 108
+nbdkit: vddk[1]: debug: retry 5: waiting 32 seconds before retrying
+nbdkit: vddk[1]: debug: vddk: open readonly=1 exportname="" tls=0
+nbdkit: vddk[1]: debug: vddk: default_export readonly=1 tls=0
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_AllocateConnectParams ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_ConnectEx (h->params, 1, NULL, NULL, &connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Establish connection using (null).
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLibConnectInt: Establish connection.
+nbdkit: vddk[1]: debug: VixDiskLib: Resolve host.
+nbdkit: vddk[1]: debug: 2025-06-26T07:19:55.106Z error -[00195] [Originator@6876 sub=Default] Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_ConnectEx: Advanced transport modes not available for opening moref=vm-72331. (Cannot use advanced transport modes for 10.238.186.1/moref=vm-72331/: Cannot create directory /tmp/vmware-qemu/4216e4f2-731b-9e58-3b50-b41057207a80-vm-72331.)
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Open (connection, [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk, 4, &handle)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Open disk '[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk'.
+nbdkit: vddk[1]: debug: NBD_ClientOpen: attempting to create connection to vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902
+nbdkit: vddk[1]: debug: CnxAuthdConnect: Returning false because CnxAuthdConnectTCP failed
+nbdkit: vddk[1]: debug: CnxConnectAuthd: Returning false because CnxAuthdConnect failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Returning false because CnxConnectAuthd failed
+nbdkit: vddk[1]: debug: Cnx_Connect: Error message: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcNewAuthdConnectionEx: Failed to connect to peer. Error: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]NfcEstablishAuthCnxToServer: Failed to create new AuthD connection: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: error: [NFC ERROR]Nfc_BindAndEstablishAuthdCnx3: Failed to create a connection with server yi-2nd-cl51-hm002.l-cloud.dom: Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: NBD_ClientOpen: Couldn't connect to yi-2nd-cl51-hm002.l-cloud.dom:902 Host address lookup for server yi-2nd-cl51-hm002.l-cloud.dom failed: Name or service not known
+nbdkit: vddk[1]: debug: DISKLIB-DSCPTR: DescriptorOpenNbd: Failed to open NBD extent 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-LINK  : DiskLinkOpen: Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902': : NBD_ERR_NETWORK_CONNECT
+nbdkit: vddk[1]: debug: DISKLIB-CHAIN : DiskChainOpen: "vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902": failed to open: NBD_ERR_NETWORK_CONNECT.
+nbdkit: vddk[1]: debug: DISKLIB-LIB   : Failed to open 'vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902' with flags 0xe NBD_ERR_NETWORK_CONNECT (2338).
+nbdkit: vddk[1]: debug: VixDiskLib: Detected DiskLib error 2338 (NBD_ERR_NETWORK_CONNECT).
+nbdkit: vddk[1]: debug: VixDiskLib: Failed to open disk vpxa-nfc://[VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk@yi-2nd-cl51-hm002.l-cloud.dom:902!52 bf 81 a2 8c a4 7a 3d-23 47 8a 34 82 dd 27 b9. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 6435.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_OpenEx: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) (DiskLib error 2338: NBD_ERR_NETWORK_CONNECT) at 7112.
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Open: Cannot open disk [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk. Error 14009 (The server refused connection) at 7199.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_GetErrorText (14009)
+nbdkit: vddk[1]: error: VixDiskLib_Open: [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk: The server refused connection
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeErrorText ()
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_Disconnect (connection)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_Disconnect: Disconnect.
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Function: VixDiskLib_Open
+nbdkit: vddk[1]: debug: VixDiskLib: Backup Failure Error: 14009
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: VDDK call: VixDiskLib_FreeConnectParams (params)
+nbdkit: vddk[1]: debug: VixDiskLib: VixDiskLib_FreeConnectParams: Free connection parameters.
+nbdkit: vddk[1]: debug: vddk: open returned handle (nil)
+nbdkit: vddk[1]: debug: could not recover after 5 retries
+nbdkit: vddk[1]: debug: retry: open returned handle (nil)
+nbdkit: vddk[1]: debug: cacheextents: open returned handle (nil)
+nbdkit: vddk[1]: debug: blocksize: open returned handle (nil)
+nbdkit: vddk[1]: debug: cow: open returned handle (nil)
+nbdkit: vddk[1]: debug: multi-conn: open returned handle (nil)
+nbdkit: vddk[1]: debug: replying to unknown (0x7) with unknown (0x80000006)
+nbdkit: vddk[1]: debug: replying to unknown (0x2) with unknown (0x1)
+nbdkit: vddk[1]: debug: write: unknown (0x2): Broken pipe
+qemu-kvm: -drive file=nbd:unix:/tmp/v2v.jB9qTk/in0,cache=unsafe,format=raw,discard=unmap,id=hd0,if=none: Requested export not available
+server reported: VixDiskLib_Open: [VMW_2ND_CL51_ESSD02] YI-OV-PoC-RHEL94/YI-OV-PoC-RHEL94.vmdk: The server refused connection
+libguestfs: child_cleanup: 0x55867d899860: child process died
+libguestfs: sending SIGTERM to process 191
+libguestfs: trace: v2v: launch = -1 (error)
+virt-v2v: error: libguestfs error: guestfs_launch failed, see earlier error messages
+rm -rf -- '/tmp/v2vnbdkit.eTuAN0'
+nbdkit: debug: multi-conn: cleanup
+nbdkit: debug: cow: cleanup
+nbdkit: debug: blocksize: cleanup
+nbdkit: debug: cacheextents: cleanup
+nbdkit: debug: retry: cleanup
+nbdkit: debug: vddk: cleanup
+nbdkit: debug: vddk: unload plugin
+nbdkit: debug: VDDK call: VixDiskLib_Exit ()
+nbdkit: debug: VixDiskLib: VixDiskLib_Exit: Unmatched Init calls so far: 1.
+rm -rf -- '/tmp/v2v.jB9qTk'
+libguestfs: trace: v2v: close
+libguestfs: closing guestfs handle 0x55867d899860 (state 0)
+libguestfs: command: run: rm
+libguestfs: command: run: \ -rf /tmp/libguestfsDn4oMh
+libguestfs: command: run: rm
+libguestfs: command: run: \ -rf /tmp/libguestfsM1NkoA
+nbdkit: debug: OBJLIB-LIB: ObjLib cleanup done.
+nbdkit: debug: VDDK function stats (-D vddk.stats=1):
+nbdkit: debug: VixDiskLib_...                        \xc2\xb5s calls           bytes
+nbdkit: debug:   Exit                           1002721     1
+nbdkit: debug:   Open                            808277     6
+nbdkit: debug:   ConnectEx                       765519     6
+nbdkit: debug:   InitEx                          461643     1
+nbdkit: debug:   Disconnect                        3021     6
+nbdkit: debug:   FreeConnectParams                  105     6
+nbdkit: debug:   AllocateConnectParams               86     6
+nbdkit: debug:   GetErrorText                        51     6
+nbdkit: debug:   FreeErrorText                       43     6
+nbdkit: debug: retry: unload filter
+nbdkit: debug: cacheextents: unload filter
+nbdkit: debug: blocksize: unload filter
+nbdkit: debug: cow: unload filter
+nbdkit: debug: multi-conn: unload filter
+Error executing v2v command: exit status 1
+Failed to execute virt-v2v command exit status 1
