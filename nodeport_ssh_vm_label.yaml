@@ -22,3 +22,45 @@ spec:
         - name: default
           pod: {}
       terminationGracePeriodSeconds: 30
+
+
+
+
+      ==========
+
+
+
+vi /etc/ssh/sshd_config
+
+Port 22
+PasswordAuthentication yes
+
+sudo vi /etc/selinux/config
+
+SELINUX=disabled
+
+
+
+sudo passwd root
+# 비밀번호 설정
+
+# sshd_config 에서
+PermitRootLogin yes
+
+# 적용 후 재시작
+sudo systemctl restart sshd
+
+# 테스트
+ssh root@192.168.100.23 -p 30022
+
+
+
+
+sudo tail -f /var/log/secure
+
+
+
+virtctl -n <namespace> ssh <username>@example-vm -i <ssh_key>
+
+
+
