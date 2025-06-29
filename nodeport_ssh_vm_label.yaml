@@ -62,5 +62,5 @@ sudo tail -f /var/log/secure
 
 virtctl -n <namespace> ssh <username>@example-vm -i <ssh_key>
 
-
+ssh cloud-user@192.168.100.25 -p 30022 -i nvme
 
