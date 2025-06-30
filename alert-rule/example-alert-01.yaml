@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: example-alert-01
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: example-alert-01
+      rules:
+        - alert: NotRunningVM
+          for: 1m
+          expr: count(kubevirt_vm_info{status!="Running"}) > 0
+          labels:
+            severity: critical
+          annotations:
+            message: This is an example alert.
+            

@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: example-alert
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: example-alert
+      rules:
+        - alert: EtcdCount
+          for: 1m
+          expr: count(etcd_cluster_version) == 3
+          labels:
+            severity: critical
+          annotations:
+            message: This is an example alert.
+            
