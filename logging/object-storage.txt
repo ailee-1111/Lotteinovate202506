@@ -1,0 +1,5 @@
+Name : redhat-poc
+URL : https://yiobj2.l-cloud.co.kr
+Access key ID : AKIA39557566D4D80238
+Access Secret key : Z6x0q3cNqaOumwKZT3kEdWYuw6pq0bmH6r4eovJU
+
