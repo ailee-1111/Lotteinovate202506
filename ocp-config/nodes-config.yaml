@@ -1,0 +1,59 @@
+hosts:
+  - hostname: worker1
+    role: worker
+    interfaces:
+      - name: enp6s0
+        macAddress: 00:25:b5:c2:c1:0a
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: enp6s0
+          type: ethernet
+          state: up
+          mac-address: 00:25:b5:c2:c1:0a
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.157
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: enp6s0
+            table-id: 254
+  - hostname: worker2
+    role: worker
+    interfaces:
+      - name: enp6s0
+        macAddress: 00:25:b5:c2:d4:0a
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: enp6s0
+          type: ethernet
+          state: up
+          mac-address: 00:25:b5:c2:d4:0a
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.158
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: enp6s0
+            table-id: 254

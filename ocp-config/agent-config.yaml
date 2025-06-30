@@ -1,0 +1,182 @@
+apiVersion: v1beta1
+kind: AgentConfig
+metadata: 
+  name: yi-poc
+rendezvousIP: 10.238.224.151
+additionalNTPSources:
+  - 10.238.224.10
+hosts:
+  - hostname: master1
+    role: master
+    interfaces:
+      - name: ens192
+        macAddress: 00:50:56:96:c0:ff
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: ens192
+          type: ethernet
+          state: up
+          mac-address: 00:50:56:96:c0:ff
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.151
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: ens192
+            table-id: 254
+  - hostname: master2
+    role: master
+    interfaces:
+      - name: ens192
+        macAddress: 00:50:56:96:7a:06
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: ens192
+          type: ethernet
+          state: up
+          mac-address: 00:50:56:96:7a:06
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.152
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: ens192
+            table-id: 254
+  - hostname: master3
+    role: master
+    interfaces:
+      - name: ens192
+        macAddress: 00:50:56:96:b5:ca
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: ens192
+          type: ethernet
+          state: up
+          mac-address: 00:50:56:96:b5:ca
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.153
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: ens192
+            table-id: 254
+  - hostname: infra1
+    role: worker
+    interfaces:
+      - name: ens192
+        macAddress: 00:50:56:96:c5:fb
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: ens192
+          type: ethernet
+          state: up
+          mac-address: 00:50:56:96:c5:fb
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.154
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: ens192
+            table-id: 254
+  - hostname: infra2
+    role: worker
+    interfaces:
+      - name: ens192
+        macAddress: 00:50:56:96:4a:93
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: ens192
+          type: ethernet
+          state: up
+          mac-address: 00:50:56:96:4a:93
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.155
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: ens192
+            table-id: 254
+  - hostname: infra3
+    role: worker
+    interfaces:
+      - name: ens192
+        macAddress: 00:50:56:96:e5:c7
+    rootDeviceHints:
+      deviceName: /dev/sda
+    networkConfig:
+      interfaces:
+        - name: ens192
+          type: ethernet
+          state: up
+          mac-address: 00:50:56:96:e5:c7
+          ipv4:
+            enabled: true
+            dhcp: false
+            address:
+              - ip: 10.238.224.156
+                prefix-length: 24
+      dns-resolver:
+        config:
+          server:
+            - 10.238.224.10
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 10.238.224.254
+            next-hop-interface: ens192
+            table-id: 254

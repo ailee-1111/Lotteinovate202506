@@ -1,0 +1,66 @@
+apiVersion: v1
+baseDomain: openshift.net
+metadata:
+  name: yi-poc
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+networking:
+  networkType: OVNKubernetes
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.238.224.0/24
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  none: {}
+imageContentSources:
+- mirrors:
+  - yi-bastion.yi-poc.openshift.net:8443/openshift/release
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+- mirrors:
+  - yi-bastion.yi-poc.openshift.net:8443/openshift/release-images
+  source: quay.io/openshift-release-dev/ocp-release
+pullSecret: |
+  {
+    "auths": {
+      "yi-bastion.yi-poc.openshift.net:8443": {
+        "auth": "aW5pdDpQQHNzdzByZA=="
+      }
+    }
+  }
+sshKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0hyOlhS1JAFReedXKjCHbCpzEUYsne1WY3q2sdjM46HYqWq4LPSU8erwwhbFmo1vSf9D3z3ekf8bu8Gp4+A3WCFB9zzKCkH+65Ie+7+5YzAlKZrP9VqgmkvS5Io3JDzsWwbWUizLC5bl6p6HeNKLuhA57pGcK/N4KbR+SA38Gzj/Tta2HYxwcCfO+iL34JWA20C1UpBPHF+o5VUQAEwTXv2DrbGBEXLzrJG8AQMEdEjtJ5bOl3L2YXerwXtRh7aYXDLmT8Yvs4bpDA1cKo2nJP0t047hRd9EIeuUePRBxG+EXtG3pbsY9g/PA9xpJuMWc2QqdSFyMQq+qVvM/5GciJ1S4jpT/zk7B66wrxMnjhPjN354DMnptYQ3s6KOi0uojcbWY6/6uw1tbpBB2PlZyB04SZgmRs2cQCiETXgrdDrPhv95uAg0OgM3W9bs/iJBHb3UgQCJ7qa0UhDosHfkuPsOTKqHGTA9GLUCd91TPmlblnmF1a+F9xCpWK+CGaz8lcgeXanezAw8ek5HfDtivMfgKrhV3QqhgupS6q4XgnQS7KMrb39sqspgRA4ItOOX/Mb9X6u16ZpVLT6yJhELCnSgQvCy59ttT4/1706kR4ov0sBd+U+GVurFG66cpE1Rv87expYnZg0xymghb0n1jUXlIl9J/D1Hu9kLMgn9QJQ== root@yi-bastion.yi-poc.openshift.net'
+additionalTrustBundle: |
+  -----BEGIN CERTIFICATE-----
+  MIIEBTCCAu2gAwIBAgIUQqD6EuFTmBF3QbXj7qgKu13PqLkwDQYJKoZIhvcNAQEL
+  BQAweTELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlZBMREwDwYDVQQHDAhOZXcgWW9y
+  azENMAsGA1UECgwEUXVheTERMA8GA1UECwwIRGl2aXNpb24xKDAmBgNVBAMMH3lp
+  LWJhc3Rpb24ueWktcG9jLm9wZW5zaGlmdC5uZXQwHhcNMjUwNjE2MDg0NTI1WhcN
+  MjgwNDA1MDg0NTI1WjB5MQswCQYDVQQGEwJVUzELMAkGA1UECAwCVkExETAPBgNV
+  BAcMCE5ldyBZb3JrMQ0wCwYDVQQKDARRdWF5MREwDwYDVQQLDAhEaXZpc2lvbjEo
+  MCYGA1UEAwwfeWktYmFzdGlvbi55aS1wb2Mub3BlbnNoaWZ0Lm5ldDCCASIwDQYJ
+  KoZIhvcNAQEBBQADggEPADCCAQoCggEBAMFU8Rz6jyOvx/QrEw1VeQeeXd9RIuNi
+  DN3ll1gozxBidff91dG/abGF5+CzpeOnlrAkJtL5cB3kr3MMWfTQCIe4YUKWOSrx
+  WGtzHdQEdqppCpizYKHIMDWDRBxWilyxzdUDkwebOXNga3wv/d1S4PfWupHMpmLi
+  rP/6YHHqjnZB8HoVTrhDYN+vtUgcbz3XSP+LdTIaaF31z9VhuhdmV+SiOo/gFKL/
+  /b/hz873LrlbWvjAVr+cZTQMY7MznvipBLiDK5nC9/Q2j4dDXgFBvHnmi0rD3b5K
+  1/NvIagDNcJVdg2XsCtwPVF2Ej2PSzIWFWMY3Ll6s/FJ3xMo/mau+DcCAwEAAaOB
+  hDCBgTALBgNVHQ8EBAMCAuQwEwYDVR0lBAwwCgYIKwYBBQUHAwEwKgYDVR0RBCMw
+  IYIfeWktYmFzdGlvbi55aS1wb2Mub3BlbnNoaWZ0Lm5ldDASBgNVHRMBAf8ECDAG
+  AQH/AgEBMB0GA1UdDgQWBBQxYpbBzXcfa70P7yamqjxJtdXHbTANBgkqhkiG9w0B
+  AQsFAAOCAQEArbxEJgUupUdZmI/1TqOs6e/8c09SyCVSgyDvoAn6sJj/+kj9yklk
+  2XwIpPrNZrNOMFBgLcEkibdjaAgyVGxdNrCVT18lgiFjH1LJTOCkR+nRRTwOvLLn
+  2K+bs/3x7Q+nyHJDLvKhrGyCJDpLcidHpxHjgzaaixg+muY7iDwC3V16Lcxy3sWC
+  OYM9H1JHCwRAbCSngWV5c1J54FRiGhflw+HyokRfKBqHDEWIvk3okka8lqBJhDDM
+  0+xiP5CMvqsSfjd4tAvclhSqoCvY8ZCUIzXnDbmGLgnDkG5zYTS2SwKiLAXzfUQy
+  pwn1blKVAe/E/wZXUtEEqr2LaH0hqhNACg==
+  -----END CERTIFICATE-----
