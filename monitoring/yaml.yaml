@@ -1,0 +1,534 @@
+stion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# ls -thlr
+total 44K
+-rw-r--r-- 1 root root  396 Jun 24 01:55 vm-svm.yaml
+-rw-r--r-- 1 root root  394 Jun 25 05:35 ac.yaml
+-rw-r--r-- 1 root root 4.6K Jun 26 01:42 template-rhel9-node-selector.yaml
+-rw-r--r-- 1 root root 4.9K Jun 26 02:10 template-rhel9-node-affinity.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-1.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-2.yaml
+-rw-r--r-- 1 root root 1.5K Jun 26 05:08 pr-vm.yaml
+-rw-r--r-- 1 root root  292 Jun 27 00:33 storage-svc.yaml
+-rw-r--r-- 1 root root 1.5K Jun 27 00:49 poc-scenario.text
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat vm-svm.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vm-nodeexporter
+  namespace: 31-monitoring
+spec:
+  endpoints:
+  - interval: 5s
+    port: metrics
+    relabelings:
+      - sourceLabels: [__meta_kubernetes_pod_label_kubevirt_io_domain]
+        targetLabel: instance
+  namespaceSelector:
+    matchNames:
+    - 31-monitoring
+  selector:
+    matchLabels:
+      app: rhel9-1
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat ac.yaml
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: vm-event-webhook
+  namespace: 31-monitoring
+spec:
+  route:
+    receiver: webhook-receiver
+    group_wait: 10s
+    group_interval: 30s
+    repeat_interval: 1h
+  receivers:
+    - name: webhook-receiver
+      webhookConfigs:
+        - url: "http://bastion.ocp414.test:8080/webhook"
+          sendResolved: true
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# ls -thlr
+total 44K
+-rw-r--r-- 1 root root  396 Jun 24 01:55 vm-svm.yaml
+-rw-r--r-- 1 root root  394 Jun 25 05:35 ac.yaml
+-rw-r--r-- 1 root root 4.6K Jun 26 01:42 template-rhel9-node-selector.yaml
+-rw-r--r-- 1 root root 4.9K Jun 26 02:10 template-rhel9-node-affinity.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-1.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-2.yaml
+-rw-r--r-- 1 root root 1.5K Jun 26 05:08 pr-vm.yaml
+-rw-r--r-- 1 root root  292 Jun 27 00:33 storage-svc.yaml
+-rw-r--r-- 1 root root 1.5K Jun 27 00:49 poc-scenario.text
+[root@yi-bastion jylee]# cat template-rhel9-node-selector.yaml
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    defaults.template.kubevirt.io/disk: rootdisk
+    description: Test Template for RHEL9 - Node Selector
+    iconClass: icon-rhel
+    openshift.io/display-name: RHEL9 VM - NodeSelector
+    openshift.kubevirt.io/pronounceable-suffix-for-name-expression: "true"
+    operator-sdk/primary-resource: openshift-cnv/ssp-kubevirt-hyperconverged
+    operator-sdk/primary-resource-type: SSP.ssp.kubevirt.io
+    tags: hidden,kubevirt,virtualmachine,linux,rhel
+    template.kubevirt.io/containerdisks: |
+      registry.redhat.io/rhel9/rhel-guest-image
+    template.kubevirt.io/editable: |
+      /objects[0].spec.template.spec.domain.cpu.sockets
+      /objects[0].spec.template.spec.domain.cpu.cores
+      /objects[0].spec.template.spec.domain.cpu.threads
+      /objects[0].spec.template.spec.domain.memory.guest
+      /objects[0].spec.template.spec.domain.devices.disks
+      /objects[0].spec.template.spec.volumes
+      /objects[0].spec.template.spec.networks
+    template.kubevirt.io/images: |
+      https://access.redhat.com/downloads/content/479/ver=/rhel---9/9.0/x86_64/product-software
+    template.kubevirt.io/provider: Jae Yul Lee
+    template.kubevirt.io/version: v1alpha1
+    template.openshift.io/bindable: "false"
+  labels:
+    app.kubernetes.io/component: templating
+    app.kubernetes.io/managed-by: ssp-operator
+    app.kubernetes.io/name: common-templates
+    app.kubernetes.io/part-of: hyperconverged-cluster
+    app.kubernetes.io/version: 4.18.0
+    flavor.template.kubevirt.io/small: "true"
+    template.kubevirt.io/architecture: amd64
+    template.kubevirt.io/default-os-variant: "true"
+    template.kubevirt.io/type: base
+    template.kubevirt.io/version: v0.32.2
+    workload.template.kubevirt.io/server: "true"
+  name: rhel9-node-selector
+  namespace: openshift
+objects:
+- apiVersion: kubevirt.io/v1
+  kind: VirtualMachine
+  metadata:
+    annotations:
+      vm.kubevirt.io/validations: |
+        [
+          {
+            "name": "minimal-required-memory",
+            "path": "jsonpath::.spec.domain.memory.guest",
+            "rule": "integer",
+            "message": "This VM requires more memory.",
+            "min": 1610612736
+          }
+        ]
+    labels:
+      app: ${NAME}
+      kubevirt.io/dynamic-credentials-support: "true"
+      vm.kubevirt.io/template: rhel9-node-selector
+      vm.kubevirt.io/template.revision: "1"
+      vm.kubevirt.io/template.version: v0.32.2
+    name: ${NAME}
+  spec:
+    dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: ${NAME}
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: ${DATA_SOURCE_NAME}
+          namespace: ${DATA_SOURCE_NAMESPACE}
+        storage:
+          resources:
+            requests:
+              storage: 20Gi
+    runStrategy: Halted
+    template:
+      metadata:
+        annotations:
+          vm.kubevirt.io/flavor: small
+          vm.kubevirt.io/os: rhel9
+          vm.kubevirt.io/workload: server
+        labels:
+          kubevirt.io/domain: ${NAME}
+          kubevirt.io/size: small
+      spec:
+        nodeSelector:
+          nodeGroup: "ov1"
+        architecture: amd64
+        domain:
+          cpu:
+            cores: 1
+            sockets: 1
+            threads: 1
+          devices:
+            disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+            interfaces:
+            - masquerade: {}
+              model: virtio
+              name: default
+            rng: {}
+          features:
+            smm:
+              enabled: true
+          firmware:
+            bootloader:
+              efi: {}
+          memory:
+            guest: 2Gi
+        networks:
+        - name: default
+          pod: {}
+        terminationGracePeriodSeconds: 180
+        volumes:
+        - dataVolume:
+            name: ${NAME}
+          name: rootdisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              user: cloud-user
+              password: P@ssw0rd
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+parameters:
+- description: VM name
+  from: rhel9-[a-z0-9]{16}
+  generate: expression
+  name: NAME
+- description: Name of the DataSource to clone
+  name: DATA_SOURCE_NAME
+  value: rhel9
+- description: Namespace of the DataSource
+  name: DATA_SOURCE_NAMESPACE
+  value: openshift-virtualization-os-images
+- description: Randomized password for the cloud-init user cloud-user
+  from: '[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}'
+  generate: expression
+  name: CLOUD_USER_PASSWORD
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat template-rhel9-node-affinity.yaml
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    defaults.template.kubevirt.io/disk: rootdisk
+    description: Test Template for RHEL9 - Node Affinity
+    iconClass: icon-rhel
+    openshift.io/display-name: RHEL9 VM - NodeAffinity
+    openshift.kubevirt.io/pronounceable-suffix-for-name-expression: "true"
+    operator-sdk/primary-resource: openshift-cnv/ssp-kubevirt-hyperconverged
+    operator-sdk/primary-resource-type: SSP.ssp.kubevirt.io
+    tags: hidden,kubevirt,virtualmachine,linux,rhel
+    template.kubevirt.io/containerdisks: |
+      registry.redhat.io/rhel9/rhel-guest-image
+    template.kubevirt.io/editable: |
+      /objects[0].spec.template.spec.domain.cpu.sockets
+      /objects[0].spec.template.spec.domain.cpu.cores
+      /objects[0].spec.template.spec.domain.cpu.threads
+      /objects[0].spec.template.spec.domain.memory.guest
+      /objects[0].spec.template.spec.domain.devices.disks
+      /objects[0].spec.template.spec.volumes
+      /objects[0].spec.template.spec.networks
+    template.kubevirt.io/images: |
+      https://access.redhat.com/downloads/content/479/ver=/rhel---9/9.0/x86_64/product-software
+    template.kubevirt.io/provider: Jae Yul Lee
+    template.kubevirt.io/version: v1alpha1
+    template.openshift.io/bindable: "false"
+  labels:
+    app.kubernetes.io/component: templating
+    app.kubernetes.io/managed-by: ssp-operator
+    app.kubernetes.io/name: common-templates
+    app.kubernetes.io/part-of: hyperconverged-cluster
+    app.kubernetes.io/version: 4.18.0
+    flavor.template.kubevirt.io/small: "true"
+    template.kubevirt.io/architecture: amd64
+    template.kubevirt.io/default-os-variant: "true"
+    template.kubevirt.io/type: base
+    template.kubevirt.io/version: v0.32.2
+    workload.template.kubevirt.io/server: "true"
+  name: rhel9-node-affinity
+  namespace: openshift
+objects:
+- apiVersion: kubevirt.io/v1
+  kind: VirtualMachine
+  metadata:
+    annotations:
+      vm.kubevirt.io/validations: |
+        [
+          {
+            "name": "minimal-required-memory",
+            "path": "jsonpath::.spec.domain.memory.guest",
+            "rule": "integer",
+            "message": "This VM requires more memory.",
+            "min": 1610612736
+          }
+        ]
+    labels:
+      app: ${NAME}
+      kubevirt.io/dynamic-credentials-support: "true"
+      vm.kubevirt.io/template: rhel9-node-affinity
+      vm.kubevirt.io/template.revision: "1"
+      vm.kubevirt.io/template.version: v0.32.2
+    name: ${NAME}
+  spec:
+    dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: ${NAME}
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: ${DATA_SOURCE_NAME}
+          namespace: ${DATA_SOURCE_NAMESPACE}
+        storage:
+          resources:
+            requests:
+              storage: 20Gi
+    runStrategy: Halted
+    template:
+      metadata:
+        annotations:
+          vm.kubevirt.io/flavor: small
+          vm.kubevirt.io/os: rhel9
+          vm.kubevirt.io/workload: server
+        labels:
+          kubevirt.io/domain: ${NAME}
+          kubevirt.io/size: small
+      spec:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: nodeGroup
+                      operator: In
+                      values:
+                        - ov2
+        architecture: amd64
+        domain:
+          cpu:
+            cores: 1
+            sockets: 1
+            threads: 1
+          devices:
+            disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+            interfaces:
+            - masquerade: {}
+              model: virtio
+              name: default
+            rng: {}
+          features:
+            smm:
+              enabled: true
+          firmware:
+            bootloader:
+              efi: {}
+          memory:
+            guest: 2Gi
+        networks:
+        - name: default
+          pod: {}
+        terminationGracePeriodSeconds: 180
+        volumes:
+        - dataVolume:
+            name: ${NAME}
+          name: rootdisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              user: cloud-user
+              password: P@ssw0rd
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+parameters:
+- description: VM name
+  from: rhel9-[a-z0-9]{16}
+  generate: expression
+  name: NAME
+- description: Name of the DataSource to clone
+  name: DATA_SOURCE_NAME
+  value: rhel9
+- description: Namespace of the DataSource
+  name: DATA_SOURCE_NAMESPACE
+  value: openshift-virtualization-os-images
+- description: Randomized password for the cloud-init user cloud-user
+  from: '[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}'
+  generate: expression
+  name: CLOUD_USER_PASSWORD
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# ls -thlr
+total 44K
+-rw-r--r-- 1 root root  396 Jun 24 01:55 vm-svm.yaml
+-rw-r--r-- 1 root root  394 Jun 25 05:35 ac.yaml
+-rw-r--r-- 1 root root 4.6K Jun 26 01:42 template-rhel9-node-selector.yaml
+-rw-r--r-- 1 root root 4.9K Jun 26 02:10 template-rhel9-node-affinity.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-1.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-2.yaml
+-rw-r--r-- 1 root root 1.5K Jun 26 05:08 pr-vm.yaml
+-rw-r--r-- 1 root root  292 Jun 27 00:33 storage-svc.yaml
+-rw-r--r-- 1 root root 1.5K Jun 27 00:49 poc-scenario.text
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat vm-metric-svc-1.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vm-metric-1
+  namespace: 31-monitoring
+  labels:
+    vm.kubevirt.io/name: rhel9-1
+    app: vm-metric
+spec:
+  selector:
+    vm.kubevirt.io/name: rhel9-1
+  ports:
+    - name: metrics
+      port: 9100
+      targetPort: 9100
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat vm-metric-svc-2.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vm-metric-2
+  namespace: 31-monitoring
+  labels:
+    vm.kubevirt.io/name: rhel9-2
+    app: vm-metric
+spec:
+  selector:
+    vm.kubevirt.io/name: rhel9-2
+  ports:
+    - name: metrics
+      port: 9100
+      targetPort: 9100
+[root@yi-bastion jylee]#
+
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# ls -thlr
+total 44K
+-rw-r--r-- 1 root root  396 Jun 24 01:55 vm-svm.yaml
+-rw-r--r-- 1 root root  394 Jun 25 05:35 ac.yaml
+-rw-r--r-- 1 root root 4.6K Jun 26 01:42 template-rhel9-node-selector.yaml
+-rw-r--r-- 1 root root 4.9K Jun 26 02:10 template-rhel9-node-affinity.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-1.yaml
+-rw-r--r-- 1 root root  268 Jun 26 03:09 vm-metric-svc-2.yaml
+-rw-r--r-- 1 root root 1.5K Jun 26 05:08 pr-vm.yaml
+-rw-r--r-- 1 root root  292 Jun 27 00:33 storage-svc.yaml
+-rw-r--r-- 1 root root 1.5K Jun 27 00:49 poc-scenario.text
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat pr-vm.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: vmhighresource
+  namespace: 31-monitoring
+  labels:
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: vm.rules
+      rules:
+        - alert: VMHighCPUUsage
+          expr: |
+            (1 - avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[30s]))) * 100 > 30
+          for: 0s
+          labels:
+            severity: warning
+            user_workload_alert: "true"
+          annotations:
+            message: "High CPU Usage on VM {{ $labels.instance }}"
+            summary: "high CPU Usage"
+        - alert: VMHighDiskUsage
+          expr: |
+            (1 - (node_filesystem_free_bytes{job="vm-metric"} / node_filesystem_size_bytes{job="vm-metric"})) * 100 > 10
+          for: 0s
+          labels:
+            severity: warning
+            user_workload_alert: "true"
+          annotations:
+            message: "High Disk Usage on VM {{ $labels.instance }}"
+            summary: "high Disk Usage"
+        - alert: VMHighMemUsage
+          expr: |
+            (1 - (node_memory_MemAvailable_bytes{job="vm-metric"} / node_memory_MemTotal_bytes{job="vm-metric"})) * 100 > 30
+          for: 0s
+          labels:
+            severity: warning
+            user_workload_alert: "true"
+          annotations:
+            message: "High Memory Usage on VM {{ $labels.instance }}"
+            summary: "high Memory Usage"
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat storage-svc.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: trident-monitor
+  namespace: trident
+spec:
+  endpoints:
+  - interval: 15s
+    port: metrics
+  namespaceSelector:
+    matchNames:
+    - trident
+  selector:
+    matchLabels:
+      app: controller.csi.trident.netapp.io
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# cat poc-scenario.text
+1. ext resource metric
+1) cpu : rate(container_cpu_usage_seconds_total{container="compute",namespace="31-monitoring"}[1m])
+2) memory : container_memory_working_set_bytes{container="compute",namespace="31-monitoring"}
+3) disk : kubevirt_vmi_storage_write_traffic_bytes_total{drive="rootdisk",namespace="31-monitoring"}
+           kubevirt_vmi_storage_read_traffic_bytes_total{drive="rootdisk",namespace="31-monitoring"}
+4) network : kubevirt_vmi_network_receive_bytes_total{namespace="31-monitoring"}
+                kubevirt_vmi_network_transmit_bytes_total{namespace="31-monitoring"}
+5) storage : sum(trident_volume_count) by (backend_url)
+             sum(trident_volume_allocated_bytes) by (backend_url)
+             (sum(trident_rest_ops_seconds_total_count{status_code=~"2.."}) / sum(trident_rest_ops_seconds_total_count)) * 100
+             sum(trident_operation_duration_miliseconds_sum{success="true"}) / sum(trident_operation_duration_miliseconds_count{success="true"})
+
+2. int resource metric
+1) cpu : (1 - avg by (instance) (rate(node_cpu_seconds_total{mode="idle",job="vm-metric"}[10s]))) * 100
+2) memory : (1 - (node_memory_MemAvailable_bytes{job="vm-metric"} / node_memory_MemTotal_bytes{job="vm-metric"})) * 100
+3) disk : (1 - (node_filesystem_free_bytes{job="vm-metric"} / node_filesystem_size_bytes{job="vm-metric"})) * 100
+4) network : rate(node_network_receive_bytes_total{job="vm-metric"}[10s])
+5) vm up : up{job="vm-metric"}
+
+3. vm status
+1 -> Running : kubevirt_vmi_info{namespace="31-monitoring"}
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+
+
+
+
