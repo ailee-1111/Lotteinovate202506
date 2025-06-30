@@ -1,0 +1,23 @@
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  annotations:
+    k8s.ovn.org/network-id: "7"
+    k8s.ovn.org/network-name: vlan1195
+  creationTimestamp: "2025-06-25T00:52:47Z"
+  generation: 1
+  name: vlan1195
+  namespace: 13-vmnetwork
+  resourceVersion: "7785390"
+  uid: b8c8e393-42fc-4043-8e1f-b2f41f6f62ed
+spec:
+  config: |
+    {
+        "cniVersion": "0.3.1",
+        "name": "vlan1195",
+        "type": "ovn-k8s-cni-overlay",
+        "physicalnetworkname": "localnet2",
+        "netAttachDefName": "13-vmnetwork/vlan1195",
+        "topology":"localnet",
+        "vlanID": 1195
+    }
