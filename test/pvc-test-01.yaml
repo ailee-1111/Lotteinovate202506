@@ -1,0 +1,38 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-test-01
+  namespace: test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 16Gi
+  storageClassName: sc-ontap-nas-033
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-test-01
+  namespace: test
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: infra2
+  containers:
+    - name: container-test-00
+      image: yi-bastion.yi-poc.openshift.net:8443/ubi9/ubi:9.6
+      resources:
+        limits:
+          cpu: "1"
+          memory: "1Gi"
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: pvc-test-01
+          mountPath: /test
+  restartPolicy: Never
+  volumes:
+    - name: pvc-test-01
+      persistentVolumeClaim:
+        claimName: pvc-test-01
