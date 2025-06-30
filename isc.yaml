@@ -1,0 +1,87 @@
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  platform:
+    architectures:
+      - "amd64"
+    channels:
+      - name: stable-4.18
+        minVersion: 4.18.10
+    graph: true
+  operators:
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.18
+      packages:
+        - name: kubevirt-hyperconverged
+          channels:
+            - name: stable
+          minVersion: '4.18.0'
+        - name: kubernetes-nmstate-operator
+          channels:
+            - name: stable
+        - name: metallb-operator
+          channels:
+            - name: stable
+        - name: node-healthcheck-operator
+          channels:
+            - name: stable
+        - name: fence-agents-remediation
+          channels:
+            - name: stable
+        - name: node-maintenance-operator
+          channels:
+            - name: stable
+        - name: machine-deletion-remediation
+          channels:
+            - name: stable
+        - name: self-node-remediation
+          channels:
+            - name: stable
+        - name: cluster-logging
+          channels:
+            - name: stable-6.2
+        - name: mtc-operator
+          channels:
+            - name: release-v1.8
+        - name: mtv-operator
+          channels:
+            - name: release-v2.8
+        - name: cluster-kube-descheduler-operator
+          channels:
+            - name: stable
+              minVersion: 5.0.1
+        - name: cincinnati-operator
+          channels:
+            - name: v1
+        - name: redhat-oadp-operator
+          channels:
+            - name: stable-1.4
+        - name: loki-operator
+          channels:
+            - name: stable-6.2
+        - name: volsync-product
+          channels:
+            - name: stable
+        - name: cluster-observability-operator
+          channels:
+            - name: stable
+    - catalog: registry.redhat.io/redhat/certified-operator-index:v4.18
+      packages:
+        - name: trident-operator
+          channels:
+            - name: stable
+  additionalImages:
+    - name: registry.redhat.io/ubi7/ubi:7.9-1445
+    - name: registry.redhat.io/ubi8/ubi:8.10-1304
+    - name: registry.redhat.io/ubi9/ubi:9.6
+    - name: quay.io/containerdisks/centos-stream:10
+    - name: quay.io/containerdisks/centos-stream:9
+    - name: quay.io/containerdisks/fedora:latest
+    - name: registry.redhat.io/rhel8/rhel-guest-image:8.10.0-1162
+    - name: registry.redhat.io/rhel9/rhel-guest-image:9.6
+    - name: registry.redhat.io/rhel10-beta/rhel-guest-image:10.0-beta
+    - name: registry.redhat.io/rhel10/rhel-guest-image:10.0
+    - name: registry.redhat.io/openshift4/ose-must-gather-rhel9:v4.18.0
+    - name: registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.18.7
+    - name: registry.redhat.io/ubi9/toolbox:9.6
+    - name: registry.redhat.io/rhel9/support-tools:9.6
+    - name: registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
