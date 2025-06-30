@@ -1,0 +1,65 @@
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# oc get configmaps -n openshift-user-workload-monitoring
+NAME                                         DATA   AGE
+alertmanager-trusted-ca-bundle               1      5d1h
+kube-root-ca.crt                             1      13d
+metrics-client-ca                            1      6d5h
+openshift-service-ca.crt                     1      13d
+prometheus-user-workload-rulefiles-0         1      4d
+prometheus-user-workload-trusted-ca-bundle   1      6d5h
+serving-certs-ca-bundle                      1      6d5h
+thanos-ruler-user-workload-rulefiles-0       0      5d2h
+user-workload-monitoring-config              1      6d5h
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# oc get configmaps user-workload-monitoring-config -n openshift-user-workload-monitoring -oyaml
+apiVersion: v1
+data:
+  config.yaml: |
+    alertmanager:
+      enabled: true
+      enableAlertmanagerConfig: true
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-06-24T01:45:45Z"
+  labels:
+    app.kubernetes.io/managed-by: cluster-monitoring-operator
+    app.kubernetes.io/part-of: openshift-monitoring
+  name: user-workload-monitoring-config
+  namespace: openshift-user-workload-monitoring
+  resourceVersion: "8015089"
+  uid: 188ba7bf-4474-409e-a423-d57d8d9e2f00
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# oc get configmaps -n openshift-monitoring
+NAME                                                 DATA   AGE
+alertmanager-trusted-ca-bundle                       1      12d
+cluster-monitoring-config                            1      6d5h
+kube-root-ca.crt                                     1      13d
+kube-state-metrics-custom-resource-state-configmap   1      13d
+kubelet-serving-ca-bundle                            1      13d
+metrics-client-ca                                    1      13d
+metrics-server-audit-profiles                        4      13d
+openshift-service-ca.crt                             1      13d
+prometheus-k8s-rulefiles-0                           55     168m
+prometheus-trusted-ca-bundle                         1      12d
+serving-certs-ca-bundle                              1      13d
+telemetry-config                                     1      13d
+[root@yi-bastion jylee]#
+[root@yi-bastion jylee]# oc get configmaps cluster-monitoring-config -n openshift-monitoring -oyaml
+apiVersion: v1
+data:
+  config.yaml: |
+    enableUserWorkload: true
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-06-24T01:43:51Z"
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+  resourceVersion: "8014691"
+  uid: 63c92d3c-0db3-4c97-8a84-a9a6e4ca9325
+[root@yi-bastion jylee]#
